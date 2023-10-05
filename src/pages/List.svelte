@@ -1,7 +1,7 @@
 <script lang="ts">
   export let setCurrentPage;
   export let scouter: number;
-  export let schedule = [] as TeamGameData[] | null;
+  export let schedule = [] as TeamGameData[];
   console.log(schedule[0])
 
   type TeamGameData = {
@@ -29,6 +29,7 @@
     notes: string;
     team: Team;
     match: number;
+    done: boolean;
   };
   type Team = {
 	  name: string | null;
@@ -39,7 +40,7 @@
 
 <main>
 {#each schedule as match, i}
-  <button class="list-item" on:click={() => {setCurrentPage(2, {index: i, schedule, scouter, setCurrentPage})}}><p>Match: {match.match}</p><p>{match.team.number}</p></button>
+  <button class={`list-item ${match.done ? "done" :""}`} on:click={() => {setCurrentPage(2, {index: i, schedule, scouter, setCurrentPage})}}><p>Match: {match.match}</p><p>{match.team.number}</p></button>
 {/each}
 </main>
 
@@ -52,5 +53,9 @@
   }
   .list-item {
     width: 100%;
+  }
+
+  .done {
+    background-color: green;
   }
 </style>

@@ -29,6 +29,7 @@
     notes: string;
     team: Team;
     match: number;
+    done: boolean;
   };
   type Team = {
 	  name: string | null;

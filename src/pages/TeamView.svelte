@@ -25,6 +25,7 @@
     notes: string;
     team: Team;
     match: number;
+    done: boolean;
   };
 
   type Team = {
@@ -89,6 +90,8 @@
 <input type="number" bind:value={schedule[index].overall_grade} name="overall_grade" id="overall_grade">
 <label for="notes">Notes: </label>
 <input type="text" bind:value={schedule[index].notes} maxlength="150" name="notes" id="notes">
+<label for="done">Mark as done: </label>
+<input type="checkbox" bind:checked={schedule[index].done} name="done" id="done">
 </main>
 
 <QrCode value={JSON.stringify(schedule[index])} />
