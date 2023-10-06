@@ -1,5 +1,6 @@
 <script lang="ts">
 	import QrCode from "svelte-qrcode";
+    import Number from "../lib/Number.svelte";
 	type TeamGameData = {
 		high_cones_auto: number;
 		mid_cones_auto: number;
@@ -40,45 +41,48 @@
 	export let schedule: TeamGameData[];
 	console.log(schedule[index]);
 </script>
-
+<h1>Team: {schedule[index].team.number} | Match: {schedule[index].match_number}</h1>
+<h2>Scouter number: {scouter + 1}</h2>
 <main>
+	<div class="column">
+		<h3>Auto</h3>
 	<label for="high_cones_auto">High cones auto: </label>
-	<input
-		type="number"
+	<Number
+
 		bind:value={schedule[index].high_cones_auto}
 		name="high_cones_auto"
 		id="high_cones_auto"
 	/>
 	<label for="mid_cones_auto">Mid cones auto: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].mid_cones_auto}
 		name="mid_cones_auto"
 		id="mid_cones_auto"
 	/>
 	<label for="low_cones_auto">Low cones auto: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].low_cones_auto}
 		name="low_cones_auto"
 		id="low_cones_auto"
 	/>
 	<label for="high_cubes_auto">High cubes auto: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].high_cubes_auto}
 		name="high_cubes_auto"
 		id="high_cubes_auto"
 	/>
 	<label for="mid_cubes_auto">Mid cubes auto: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].mid_cubes_auto}
 		name="mid_cubes_auto"
 		id="mid_cubes_auto"
 	/>
 	<label for="low_cubes_auto">Low cubes auto: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].low_cubes_auto}
 		name="low_cubes_auto"
@@ -101,43 +105,46 @@
 		<option value={0}>Didn't try</option>
 		<option value={2}>Failed</option>
 	</select>
-	<label for="high_cones_auto">High cones: </label>
-	<input
+</div>
+<div class="column">
+	<h3>Teleop</h3>
+	<label for="high_cones">High cones: </label>
+	<Number
 		type="number"
 		bind:value={schedule[index].high_cones}
 		name="high_cones"
 		id="high_cones"
 	/>
 	<label for="mid_cones">Mid cones: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].mid_cones}
 		name="mid_cones"
 		id="mid_cones"
 	/>
 	<label for="low_cones">Low cones: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].low_cones}
 		name="low_cones"
 		id="low_cones"
 	/>
 	<label for="high_cubes">High cubes: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].high_cubes}
 		name="high_cubes"
 		id="high_cubes"
 	/>
 	<label for="mid_cubes">Mid cubes: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].mid_cubes}
 		name="mid_cubes"
 		id="mid_cubes"
 	/>
 	<label for="low_cubes">Low cubes: </label>
-	<input
+	<Number
 		type="number"
 		bind:value={schedule[index].low_cubes}
 		name="low_cubes"
@@ -150,6 +157,12 @@
 		name="defense"
 		id="defense"
 	/>
+	<label for="balanced">Balanced: </label>
+	<select name="balanced" bind:value={schedule[index].balanced} id="balanced">
+		<option value={1}>Yes</option>
+		<option value={0}>Didn't try</option>
+		<option value={2}>Failed</option>
+	</select>
 	<label for="parked">Parked: </label>
 	<input
 		type="checkbox"
@@ -157,6 +170,10 @@
 		name="parked"
 		id="parked"
 	/>
+	
+</div>
+<div class="column">
+	<h3>General</h3>
 	<label for="failure">Catastrophic failure: </label>
 	<input
 		type="checkbox"
@@ -186,19 +203,11 @@
 		id="overall_grade"
 	/>
 	<label for="notes">Notes: </label>
-	<input
-		type="text"
+	<textarea
 		bind:value={schedule[index].notes}
 		maxlength="150"
 		name="notes"
 		id="notes"
-	/>
-	<label for="done">Mark as done: </label>
-	<input
-		type="checkbox"
-		bind:checked={schedule[index].done}
-		name="done"
-		id="done"
 	/>
 	<label for="won">Won: </label>
 	<input
@@ -207,12 +216,16 @@
 		name="won"
 		id="won"
 	/>
-	<label for="balanced">Balanced: </label>
-	<select name="balanced" bind:value={schedule[index].balanced} id="balanced">
-		<option value={1}>Yes</option>
-		<option value={0}>Didn't try</option>
-		<option value={2}>Failed</option>
-	</select>
+	<label for="done">Mark as done: </label>
+	<input
+		type="checkbox"
+		bind:checked={schedule[index].done}
+		name="done"
+		id="done"
+	/>
+	
+	
+</div>
 </main>
 
 <QrCode value={JSON.stringify(schedule[index])} />
@@ -227,9 +240,15 @@
 <style>
 	main {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		text-align: left;
-		justify-content: flex-start;
+		justify-content: space-around;
 		align-items: flex-start;
+		width: 100%;
+		height: 100%;
+	}
+	.column {
+		display:flex;
+		flex-direction: column;
 	}
 </style>

@@ -92,8 +92,8 @@
 {/if}<button
 	on:click={() => {
 		setCurrentPage(1, {
-			scouter,
-			schedule: parseSchedule(JSON.parse(schedule_text), scouter),
+			scouter: scouter - 1,
+			schedule: parseSchedule(JSON.parse(schedule_text), scouter-1),
 		});
 	}}>Click</button
 >
