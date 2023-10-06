@@ -35,6 +35,7 @@
 	type Team = {
 		name: string | null;
 		number: string;
+		is_blue: boolean;
 	};
 
 	function parseSchedule(raw: string, scout: number): TeamGameData[] {
@@ -47,7 +48,7 @@
 					.map(
 						(it) =>
 							({
-								team: { number: it as string },
+								team: { number: it as string, is_blue: Object.keys(match.team_assignments).indexOf(it) < 3 },
 								match_number: match.match_number as number,
 								high_cones_auto: 0,
 								mid_cones_auto: 0,
@@ -85,18 +86,21 @@
 	let saved = "";
 </script>
 
-<input type="number" bind:value={scouter} />
+<label for="scouter_input">Input your scouter number:</label>
+<input type="number" id="scouter_input" bind:value={scouter} />
 {#if scouter != null}
-	<h1>Enter the schedule sent to you here:</h1>
-	<input type="text" bind:value={schedule_text} />
-{/if}<button
+<p>&</p>
+	<label for="schedule_input">Enter the schedule sent to you here:</label>
+	<input type="text" id="schedule_input" bind:value={schedule_text} />
+	<button
 	on:click={() => {
 		setCurrentPage(1, {
 			scouter: scouter - 1,
 			schedule: parseSchedule(JSON.parse(schedule_text), scouter-1),
 		});
-	}}>Click</button
+	}}>Submit</button
 >
+{/if}
 
 <p>or</p>
 

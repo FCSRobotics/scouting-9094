@@ -41,6 +41,7 @@
 	export let schedule: TeamGameData[];
 	console.log(schedule[index]);
 </script>
+
 <h1>Team: {schedule[index].team.number} | Match: {schedule[index].match_number}</h1>
 <h2>Scouter number: {scouter + 1}</h2>
 <main>
@@ -228,6 +229,7 @@
 </div>
 </main>
 
+
 <QrCode value={JSON.stringify(schedule[index])} />
 <p>{JSON.stringify(schedule[index])}</p>
 
@@ -251,4 +253,7 @@
 		display:flex;
 		flex-direction: column;
 	}
+
+
+	
 </style>
