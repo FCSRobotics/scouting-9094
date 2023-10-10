@@ -1,41 +1,27 @@
 <script lang="ts">
+	import type { TeamGameData } from "../lib/types";
+
 	export let setCurrentPage;
 	export let scouter: number;
 	export let schedule = [] as TeamGameData[];
+	$: (() => {
+		localStorage.setItem("schedule", JSON.stringify(schedule));
+		localStorage.setItem("scouter", scouter.toString());
+	})();
 	console.log(schedule[0]);
 
-	type TeamGameData = {
-		high_cones_auto: number;
-		mid_cones_auto: number;
-		low_cones_auto: number;
-		high_cubes_auto: number;
-		mid_cubes_auto: number;
-		low_cubes_auto: number;
-		mobility_auto: boolean;
-		balanced_auto: 1 | 0 | 2;
-		high_cones: number;
-		mid_cones: number;
-		low_cones: number;
-		high_cubes: number;
-		mid_cubes: number;
-		low_cubes: number;
-		defense: boolean;
-		balanced: 1 | 0 | 2;
-		parked: boolean;
-		catastrophic_failure: boolean;
-		sabotage: boolean;
-		drive_grade: number;
-		overall_grade: number;
-		notes: string;
-		team: Team;
-		match_number: number;
-		done: boolean;
-		won: boolean;
-	};
-	type Team = {
-		name: string | null;
-		number: string;
-	};
+	function simplify(schedule: TeamGameData[]) {
+		let output = schedule.filter((value) => value.done && !value.exported);
+		schedule.forEach((value) =>
+			value.done ? (value.exported = true) : "noop"
+		);
+		return chunks(output, 4);
+	}
+
+	const chunks = (a, size) =>
+		Array.from(new Array(Math.ceil(a.length / size)), (_, i) =>
+			a.slice(i * size, i * size + size)
+		);
 </script>
 
 <header>
@@ -44,11 +30,23 @@
 			setCurrentPage(3, { text: JSON.stringify({ scouter, schedule }) });
 		}}>View data</button
 	>
+	<button
+		on:click={() => {
+			setCurrentPage(4, {
+				goBack: () => {
+					setCurrentPage(1, { scouter, schedule });
+				},
+				content: simplify(schedule),
+			});
+		}}>View Qr</button
+	>
 </header>
 <main>
 	{#each schedule as match, i}
 		<button
-			class={`list-item ${match.done ? "done" : ""}`}
+			class={`list-item ${match.done ? "done" : ""} ${
+				match.exported ? "exported" : ""
+			}`}
 			on:click={() => {
 				setCurrentPage(2, { index: i, schedule, scouter, setCurrentPage });
 			}}
@@ -64,12 +62,37 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+		background-color: #cae8b5;
 	}
 	.list-item {
 		width: 100%;
+		background-color: white;
+		border: 1px solid black;
+		transition: background-color 250ms;
+		color: black;
+	}
+
+	.list-item:hover {
+		background-color: rgb(211, 211, 211);
+	}
+
+	.done.exported {
+		background-color: green;
+		color: white;
+	}
+
+	.done.exported:hover {
+		background-color: rgb(0, 95, 0);
+		color: white;
 	}
 
 	.done {
-		background-color: green;
+		background-color: yellow;
+		color: black;
+	}
+
+	.done:hover {
+		background-color: rgb(194, 194, 0);
+		color: black;
 	}
 </style>

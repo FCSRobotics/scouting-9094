@@ -6,6 +6,7 @@
 	import Setup from "./pages/Setup.svelte";
 	import TeamView from "./pages/TeamView.svelte";
 	import ViewText from "./pages/ViewText.svelte";
+	import QRpage from "./pages/QRpage.svelte";
 	let scouter = 0;
 	let currentPage = 0;
 	let gameData = [];
@@ -43,6 +44,14 @@
 		/>
 	{:else if currentPage == 3}
 		<ViewText
+			setCurrentPage={(value, props) => {
+				currentPage = value;
+				currentProps = props;
+			}}
+			{...currentProps}
+		/>
+	{:else if currentPage == 4}
+		<QRpage
 			setCurrentPage={(value, props) => {
 				currentPage = value;
 				currentProps = props;

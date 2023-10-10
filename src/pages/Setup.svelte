@@ -1,44 +1,16 @@
 <script lang="ts">
+	import { onMount } from "svelte";
+	import type { TeamGameData } from "../lib/types";
+
 	export let setCurrentPage;
 
-	let scouter = null;
+	let scouter: number | null = null;
 	let schedule_text = "";
 
-	type TeamGameData = {
-		high_cones_auto: number;
-		mid_cones_auto: number;
-		low_cones_auto: number;
-		high_cubes_auto: number;
-		mid_cubes_auto: number;
-		low_cubes_auto: number;
-		mobility_auto: boolean;
-		balanced_auto: number;
-		high_cones: number;
-		mid_cones: number;
-		low_cones: number;
-		high_cubes: number;
-		mid_cubes: number;
-		low_cubes: number;
-		defense: boolean;
-		balanced: number;
-		parked: boolean;
-		catastrophic_failure: boolean;
-		sabotage: boolean;
-		drive_grade: number;
-		overall_grade: number;
-		notes: string;
-		team: Team;
-		match_number: number;
-		done: boolean;
-		won: boolean;
-	};
-	type Team = {
-		name: string | null;
-		number: string;
-		is_blue: boolean;
-	};
-
-	function parseSchedule(raw: string, scout: number): TeamGameData[] {
+	function parseSchedule(
+		raw: { schedule: any[] | null | undefined },
+		scout: number
+	): TeamGameData[] {
 		let data = [] as TeamGameData[];
 		if (raw.schedule == undefined || raw.schedule == null) return [];
 		raw.schedule.forEach((match) => {
@@ -48,7 +20,9 @@
 					.map(
 						(it) =>
 							({
-								team: { number: it as string, is_blue: Object.keys(match.team_assignments).indexOf(it) < 3 },
+								team: {
+									number: it as string,
+								},
 								match_number: match.match_number as number,
 								high_cones_auto: 0,
 								mid_cones_auto: 0,
@@ -74,6 +48,7 @@
 								notes: "",
 								done: false,
 								won: false,
+								exported: false,
 							} as TeamGameData)
 					)
 			);
@@ -82,6 +57,10 @@
 		console.log(data);
 		return data;
 	}
+	let ls: Storage;
+	onMount(() => {
+		ls = localStorage;
+	});
 
 	let saved = "";
 </script>
@@ -89,19 +68,19 @@
 <label for="scouter_input">Input your scouter number:</label>
 <input type="number" id="scouter_input" bind:value={scouter} />
 {#if scouter != null}
-<p>&</p>
+	<p>&</p>
 	<label for="schedule_input">Enter the schedule sent to you here:</label>
 	<input type="text" id="schedule_input" bind:value={schedule_text} />
 	<button
-	on:click={() => {
-		setCurrentPage(1, {
-			scouter: scouter - 1,
-			schedule: parseSchedule(JSON.parse(schedule_text), scouter-1),
-		});
-	}}>Submit</button
->
+		on:click={() => {
+			setCurrentPage(1, {
+				scouter: scouter - 1,
+				schedule: parseSchedule(JSON.parse(schedule_text), scouter - 1),
+			});
+		}}>Submit</button
+	>
 {/if}
-
+<hr />
 <p>or</p>
 
 <label for="saved">Input previous saved data:</label>
@@ -113,4 +92,15 @@
 			scouter: JSON.parse(saved).scouter,
 		});
 	}}>Submit</button
+>
+
+<hr />
+<p>or</p>
+<button
+	on:click={() => {
+		setCurrentPage(1, {
+			schedule: JSON.parse(ls.getItem("schedule")),
+			scouter: parseInt(ls.getItem("scouter")),
+		});
+	}}>Continue from last session</button
 >

@@ -1,0 +1,16 @@
+button {
+	margin: 0px;
+	background-color: #3d6520;
+	border: none;
+	color: white;
+	cursor: pointer;
+}
+
+html {
+	background-color: hsl(100, 60%, 98%);
+	font-family: "Courier New", monospace;
+}
+
+* {
+	font-family: "Courier New", monospace;
+}
