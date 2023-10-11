@@ -1,13 +1,20 @@
-<script>
+<script lang="ts">
 	import QrCode from "svelte-qrcode";
-	export let content;
+	import type { TeamGameData } from "../lib/types";
+	export let content: TeamGameData[][];
 
 	export let goBack;
 </script>
 
-<button on:click={() => goBack()}>Back</button>
-
 {#each content as code}
 	<QrCode value={JSON.stringify(code)} />
-	<p>{JSON.stringify(code)}</p>
+	<p>
+		Matches: {code
+			.map((it) => `${it.match_number}-${it.team.number}`)
+			.join(", ")}
+	</p>
 {/each}
+<button on:click={() => goBack()}>Back</button>
+
+<style>
+</style>

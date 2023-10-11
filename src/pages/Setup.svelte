@@ -80,7 +80,7 @@
 		}}>Submit</button
 	>
 {/if}
-<hr />
+<!-- <hr />
 <p>or</p>
 
 <label for="saved">Input previous saved data:</label>
@@ -92,7 +92,7 @@
 			scouter: JSON.parse(saved).scouter,
 		});
 	}}>Submit</button
->
+> -->
 
 <hr />
 <p>or</p>

@@ -25,11 +25,11 @@
 </script>
 
 <header>
-	<button
+	<!-- <button
 		on:click={() => {
 			setCurrentPage(3, { text: JSON.stringify({ scouter, schedule }) });
 		}}>View data</button
-	>
+	> -->
 	<button
 		on:click={() => {
 			setCurrentPage(4, {

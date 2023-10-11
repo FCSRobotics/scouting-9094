@@ -2,10 +2,12 @@
 	import QrCode from "svelte-qrcode";
 	import Number from "../lib/Number.svelte";
 	import type { TeamGameData } from "../lib/types";
+	import { onMount } from "svelte";
 
 	export let setCurrentPage;
 	export let scouter;
 	export let index;
+	let loaded = false;
 	export let schedule: TeamGameData[];
 	$: (() => {
 		localStorage.setItem("schedule", JSON.stringify(schedule));
@@ -13,6 +15,13 @@
 
 		if (schedule[index].exported) schedule[index].exported = false;
 	})();
+
+	// onMount(() => {
+	// 	setTimeout(() => {
+	// 		loaded = true;
+	// 	}, 100);
+	// });
+
 	console.log(schedule[index]);
 </script>
 
@@ -208,6 +217,13 @@
 	on:click={() => {
 		setCurrentPage(1, { scouter, schedule });
 	}}>Go back</button
+>
+
+<button
+	on:click={() => {
+		setCurrentPage(1, { scouter, schedule });
+		schedule[index].exported = true;
+	}}>Go back without adding to export</button
 >
 
 <style>
