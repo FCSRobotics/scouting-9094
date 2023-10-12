@@ -7,7 +7,7 @@
 </script>
 
 {#each content as code}
-  <QrCode size="500" value={JSON.stringify(code)} />
+  <QrCode size="1000" value={JSON.stringify(code)} />
   <p>
     Matches: {code
       .map((it) => `${it.match_number}-${it.team.number}`)
