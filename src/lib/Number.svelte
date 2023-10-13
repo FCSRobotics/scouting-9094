@@ -6,7 +6,7 @@
 
 
 <button on:click={() => value--}>-</button>
-<input type="number" bind:value={value} name={id} id={id}>
+<input type="number" min="0" bind:value={value} name={id} id={id}>
 <button on:click={() => value++}>+</button>
 </div>
 
