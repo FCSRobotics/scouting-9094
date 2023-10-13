@@ -15,7 +15,7 @@
     schedule.forEach((value) =>
       value.done ? (value.exported = true) : "noop"
     );
-    return chunks(output, 2);
+    return chunks(output, 3);
   }
 
   const chunks = (a, size) =>
